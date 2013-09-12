@@ -3,11 +3,14 @@ abstract: 'List prerequisites of a Perl module'
 author:
   - 'Steven Haryanto <stevenharyanto@gmail.com>'
 build_requires:
-  Module::Build: 0.3601
+  Capture::Tiny: 0
+  Test::More: 0.88
+  Test::Script: 1.05
+  blib: 0
 configure_requires:
-  Module::Build: 0.3601
+  ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -20,6 +23,6 @@ requires:
   Perinci::CmdLine: 0.68
   perl: 5.010001
 resources:
-  homepage: http://metacpan.org/dist/App-ListPrereqs
+  homepage: http://metacpan.org/release/App-ListPrereqs
   repository: http://github.com/sharyanto/perl-App-ListPrereqs
-version: 0.01
+version: 0.02

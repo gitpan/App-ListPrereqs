@@ -2,7 +2,7 @@ NAME
     App::ListPrereqs - List prerequisites of a Perl module
 
 VERSION
-    version 0.01
+    version 0.02
 
 SYNOPSIS
      # Use via list-prereqs CLI script
@@ -14,15 +14,19 @@ DESCRIPTION
 SEE ALSO
     http://deps.cpantesters.org/
 
-DESCRIPTION
-    This module has Rinci metadata.
+AUTHOR
+    Steven Haryanto <stevenharyanto@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2013 by Steven Haryanto.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
 
 FUNCTIONS
     None are exported by default, but they are exportable.
 
   list_prereqs(%args) -> [status, msg, result, meta]
-    List prerequisites of a Perl module.
-
     Currently skips prerequisites which are modules already in core (for
     installed perl version).
 
@@ -48,13 +52,4 @@ FUNCTIONS
     message, or 'OK' if status is 200. Third element (result) is optional,
     the actual result. Fourth element (meta) is called result metadata and
     is optional, a hash that contains extra information.
-
-AUTHOR
-    Steven Haryanto <stevenharyanto@gmail.com>
-
-COPYRIGHT AND LICENSE
-    This software is copyright (c) 2013 by Steven Haryanto.
-
-    This is free software; you can redistribute it and/or modify it under
-    the same terms as the Perl 5 programming language system itself.
 

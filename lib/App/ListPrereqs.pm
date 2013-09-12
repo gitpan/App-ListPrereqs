@@ -1,6 +1,6 @@
 package App::ListPrereqs;
 
-use 5.010;
+use 5.010001;
 use strict;
 use warnings;
 use Log::Any qw($log);
@@ -10,7 +10,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(list_prereqs);
 
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
 
 $SPEC{list_prereqs} = {
     v => 1.1,
@@ -82,12 +82,18 @@ sub list_prereqs {
 
         my @res;
 
-        my $modinfo = $chi->compute(
-            "$cp-mod-$mod", $ce, sub {
-                $log->infof("Querying MetaCPAN for module %s ...", $mod);
-                $mcpan->module($mod);
-            });
-        my $dist = $modinfo->{distribution};
+        # if it already looks like a dist, save an API call
+        my $dist;
+        if ($mod =~ /-/) {
+            $dist = $mod;
+        } else {
+            my $modinfo = $chi->compute(
+                "$cp-mod-$mod", $ce, sub {
+                    $log->infof("Querying MetaCPAN for module %s ...", $mod);
+                    $mcpan->module($mod);
+                });
+            $dist = $modinfo->{distribution};
+        }
 
         if ($mdist{$dist}++) {
             push @errs, "Circular dependency (dist=$dist)";
@@ -152,9 +158,11 @@ sub list_prereqs {
 1;
 #ABSTRACT: List prerequisites of a Perl module
 
-
 __END__
+
 =pod
+
+=encoding utf-8
 
 =head1 NAME
 
@@ -162,7 +170,7 @@ App::ListPrereqs - List prerequisites of a Perl module
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -176,10 +184,16 @@ Currently uses MetaCPAN API and by default caches API results for 24 hours.
 
 http://deps.cpantesters.org/
 
-=head1 DESCRIPTION
+=head1 AUTHOR
 
+Steven Haryanto <stevenharyanto@gmail.com>
 
-This module has L<Rinci> metadata.
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Steven Haryanto.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =head1 FUNCTIONS
 
@@ -187,8 +201,6 @@ This module has L<Rinci> metadata.
 None are exported by default, but they are exportable.
 
 =head2 list_prereqs(%args) -> [status, msg, result, meta]
-
-List prerequisites of a Perl module.
 
 Currently skips prerequisites which are modules already in core (for installed
 perl version).
@@ -215,16 +227,4 @@ Return value:
 
 Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
 
-=head1 AUTHOR
-
-Steven Haryanto <stevenharyanto@gmail.com>
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2013 by Steven Haryanto.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
-
 =cut
-

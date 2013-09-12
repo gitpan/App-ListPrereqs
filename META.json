@@ -4,7 +4,7 @@
       "Steven Haryanto <stevenharyanto@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "perl_5"
    ],
@@ -14,14 +14,9 @@
    },
    "name" : "App-ListPrereqs",
    "prereqs" : {
-      "build" : {
-         "requires" : {
-            "Module::Build" : "0.3601"
-         }
-      },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.3601"
+            "ExtUtils::MakeMaker" : "6.30"
          }
       },
       "develop" : {
@@ -40,15 +35,23 @@
             "Perinci::CmdLine" : "0.68",
             "perl" : "5.010001"
          }
+      },
+      "test" : {
+         "requires" : {
+            "Capture::Tiny" : "0",
+            "Test::More" : "0.88",
+            "Test::Script" : "1.05",
+            "blib" : "0"
+         }
       }
    },
    "release_status" : "stable",
    "resources" : {
-      "homepage" : "http://metacpan.org/dist/App-ListPrereqs",
+      "homepage" : "http://metacpan.org/release/App-ListPrereqs",
       "repository" : {
          "url" : "http://github.com/sharyanto/perl-App-ListPrereqs"
       }
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }
 

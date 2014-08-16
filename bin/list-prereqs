@@ -1,16 +1,22 @@
-#!/usr/bin/perl
+#!perl
 
-use 5.010;
+# Note: This script is a CLI interface to Riap function /App/ListPrereqs/list_prereqs
+# and generated automatically using Dist::Zilla::Plugin::Rinci::ScriptFromFunc version 0.01
+
+our $DATE = '2014-08-16'; # DATE
+our $VERSION = '0.03'; # VERSION
+
+use 5.010001;
 use strict;
 use warnings;
 
-use Perinci::CmdLine;
+BEGIN { no warnings; $main::Log_Level = 'info'; }
 
-BEGIN { our $Log_Level = 'info' } # be more verbose by default
+use Perinci::CmdLine::Any -prefer_lite=>1;
 
-our $VERSION = '0.02'; # VERSION
-
-Perinci::CmdLine->new(url => '/App/ListPrereqs/list_prereqs')->run;
+Perinci::CmdLine::Any->new(
+    url => "/App/ListPrereqs/list_prereqs",
+)->run;
 
 # ABSTRACT: List prerequisites of a Perl module
 # PODNAME: list-prereqs
@@ -19,7 +25,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -27,58 +33,46 @@ list-prereqs - List prerequisites of a Perl module
 
 =head1 VERSION
 
-version 0.02
+This document describes version 0.03 of list-prereqs (from Perl distribution App-ListPrereqs), released on 2014-08-16.
 
 =head1 SYNOPSIS
 
- % list-prereqs Moose
- Package::DeprecationManager 0.11
- Package::Stash::XS 0.24
- Sub::Exporter 0.98
- Params::Util 1
- Task::Weaken 0
- MRO::Compat 0.05
- List::MoreUtils 0.28
- Class::Load::XS 0.01
- Try::Tiny 0.02
- Eval::Closure 0.04
- Class::Load 0.09
- Package::Stash 0.32
- Dist::CheckConflicts 0.02
- Sub::Name 0.05
- Data::OptList 0.107
- Carp 1.22
- Devel::GlobalDestruction 0
+Usage:
 
-List dependencies recursively:
+ % list-prereqs
 
- % list-prereqs -r Moose
- Package::DeprecationManager 0.11
-     Params::Util 0
-     Sub::Install 0
-     List::MoreUtils 0
- Package::Stash::XS 0.24
- Sub::Exporter 0.98
-     Data::OptList 0.1
- Task::Weaken 0
- MRO::Compat 0.05
- Class::Load::XS 0.01
-     Class::Load 0.2
-         Try::Tiny 0
-         Package::Stash 0.14
-             Dist::CheckConflicts 0.02
-             Module::Implementation 0.06
-                 Module::Runtime 0.012
- Eval::Closure 0.04
- Sub::Name 0.05
- Devel::GlobalDestruction 0
-     Sub::Exporter::Progressive 0.001002
+Examples:
 
-Can also return raw tree structure:
+ TODO
 
- % list-prereqs --format=json -r Foo
+To see all options:
 
-See L<App::ListPrereqs> for more details.
+ % list-prereqs --help
+
+=head1 DESCRIPTION
+
+Currently skips prerequisites which are modules already in core (for installed
+perl version).
+
+=head1 OPTIONS
+
+ TODO
+
+=head1 HOMEPAGE
+
+Please visit the project's homepage at L<https://metacpan.org/release/App-ListPrereqs>.
+
+=head1 SOURCE
+
+Source repository is at L<https://github.com/sharyanto/perl-App-ListPrereqs>.
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website L<https://rt.cpan.org/Public/Dist/Display.html?Name=App-ListPrereqs>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =head1 AUTHOR
 
@@ -86,7 +80,7 @@ Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Steven Haryanto.
+This software is copyright (c) 2014 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

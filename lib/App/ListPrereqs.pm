@@ -10,7 +10,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(list_prereqs);
 
-our $VERSION = '0.02'; # VERSION
+our $VERSION = '0.03'; # VERSION
 
 $SPEC{list_prereqs} = {
     v => 1.1,
@@ -49,7 +49,7 @@ _
 };
 sub list_prereqs {
     require CHI;
-    require MetaCPAN::API;
+    require MetaCPAN::Client;
     require Module::CoreList;
 
     my %args = @_;
@@ -62,7 +62,7 @@ sub list_prereqs {
     # '$cache' is ambiguous between args{cache} and CHI object
     my $chi = CHI->new(driver => "File");
 
-    my $mcpan = MetaCPAN::API->new;
+    my $mcpan = MetaCPAN::Client->new;
 
     my $cp = "list_prereqs"; # cache prefix
     my $ce = "24h"; # cache expire period
@@ -92,7 +92,7 @@ sub list_prereqs {
                     $log->infof("Querying MetaCPAN for module %s ...", $mod);
                     $mcpan->module($mod);
                 });
-            $dist = $modinfo->{distribution};
+            $dist = $modinfo->distribution;
         }
 
         if ($mdist{$dist}++) {
@@ -106,24 +106,24 @@ sub list_prereqs {
                 $mcpan->release(distribution => $dist);
             });
 
-        for my $dep (@{ $distinfo->{dependency} }) {
-            next unless $dep->{relationship} eq 'requires' &&
-                $dep->{phase} eq 'runtime';
-            next if $dep->{module} =~ /^(perl)$/;
-            next if $mmod{$dep->{module}}++;
+        for my $dep (@{ $distinfo->dependency }) {
+            next unless $dep->relationship eq 'requires' &&
+                $dep->phase eq 'runtime';
+            next if $dep->module =~ /^(perl)$/;
+            next if $mmod{$dep->module}++;
             my $v_in_core = Module::CoreList->first_release(
-                $dep->{module}, $dep->{version_numified});
+                $dep->module, $dep->version_numified);
             if ($v_in_core && $v_in_core <= $perl_v) {
                 $log->debugf("Module %s (%s) is already in core (perl %s), ".
                                  "skipped",
-                             $dep->{module}, $dep->{version_numified},
+                             $dep->module, $dep->version_numified,
                              $v_in_core);
                 next;
             }
 
             my $res = {
-                module=>$dep->{module},
-                version=>$dep->{version_numified},
+                module=>$dep->module,
+                version=>$dep->version_numified,
             };
             if ($recursive) {
                 $res->{prereqs} = [$do_list->(
@@ -162,7 +162,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -170,7 +170,7 @@ App::ListPrereqs - List prerequisites of a Perl module
 
 =head1 VERSION
 
-version 0.02
+This document describes version 0.03 of App::ListPrereqs (from Perl distribution App-ListPrereqs), released on 2014-08-16.
 
 =head1 SYNOPSIS
 
@@ -180,27 +180,12 @@ version 0.02
 
 Currently uses MetaCPAN API and by default caches API results for 24 hours.
 
-=head1 SEE ALSO
-
-http://deps.cpantesters.org/
-
-=head1 AUTHOR
-
-Steven Haryanto <stevenharyanto@gmail.com>
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2013 by Steven Haryanto.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
-
 =head1 FUNCTIONS
 
 
-None are exported by default, but they are exportable.
-
 =head2 list_prereqs(%args) -> [status, msg, result, meta]
+
+List prerequisites of a Perl module.
 
 Currently skips prerequisites which are modules already in core (for installed
 perl version).
@@ -225,6 +210,46 @@ Whether to check recursively.
 
 Return value:
 
-Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
+Returns an enveloped result (an array).
+
+First element (status) is an integer containing HTTP status code
+(200 means OK, 4xx caller error, 5xx function error). Second element
+(msg) is a string containing error message, or 'OK' if status is
+200. Third element (result) is optional, the actual result. Fourth
+element (meta) is called result metadata and is optional, a hash
+that contains extra information.
+
+ (any)
+
+=head1 SEE ALSO
+
+http://deps.cpantesters.org/
+
+=head1 HOMEPAGE
+
+Please visit the project's homepage at L<https://metacpan.org/release/App-ListPrereqs>.
+
+=head1 SOURCE
+
+Source repository is at L<https://github.com/sharyanto/perl-App-ListPrereqs>.
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website L<https://rt.cpan.org/Public/Dist/Display.html?Name=App-ListPrereqs>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Steven Haryanto <stevenharyanto@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2014 by Steven Haryanto.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut

@@ -10,7 +10,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(list_prereqs);
 
-our $VERSION = '0.03'; # VERSION
+our $VERSION = '0.04'; # VERSION
 
 $SPEC{list_prereqs} = {
     v => 1.1,
@@ -64,7 +64,6 @@ sub list_prereqs {
 
     my $mcpan = MetaCPAN::Client->new;
 
-    my $cp = "list_prereqs"; # cache prefix
     my $ce = "24h"; # cache expire period
 
     my @errs;
@@ -88,7 +87,7 @@ sub list_prereqs {
             $dist = $mod;
         } else {
             my $modinfo = $chi->compute(
-                "$cp-mod-$mod", $ce, sub {
+                "metacpan-mod-$mod", $ce, sub {
                     $log->infof("Querying MetaCPAN for module %s ...", $mod);
                     $mcpan->module($mod);
                 });
@@ -101,29 +100,29 @@ sub list_prereqs {
         }
 
         my $distinfo = $chi->compute(
-            "$cp-dist-$dist", $ce, sub {
+            "metacpan-dist-$dist", $ce, sub {
                 $log->infof("Querying MetaCPAN for dist %s ...", $dist);
-                $mcpan->release(distribution => $dist);
+                $mcpan->release($dist);
             });
 
         for my $dep (@{ $distinfo->dependency }) {
-            next unless $dep->relationship eq 'requires' &&
-                $dep->phase eq 'runtime';
-            next if $dep->module =~ /^(perl)$/;
-            next if $mmod{$dep->module}++;
+            next unless $dep->{relationship} eq 'requires' &&
+                $dep->{phase} eq 'runtime';
+            next if $dep->{module} =~ /^(perl)$/;
+            next if $mmod{$dep->{module}}++;
             my $v_in_core = Module::CoreList->first_release(
-                $dep->module, $dep->version_numified);
+                $dep->{module}, $dep->{version_numified});
             if ($v_in_core && $v_in_core <= $perl_v) {
                 $log->debugf("Module %s (%s) is already in core (perl %s), ".
                                  "skipped",
-                             $dep->module, $dep->version_numified,
+                             $dep->{module}, $dep->{version_numified},
                              $v_in_core);
                 next;
             }
 
             my $res = {
-                module=>$dep->module,
-                version=>$dep->version_numified,
+                module=>$dep->{module},
+                version=>$dep->{version_numified},
             };
             if ($recursive) {
                 $res->{prereqs} = [$do_list->(
@@ -170,7 +169,7 @@ App::ListPrereqs - List prerequisites of a Perl module
 
 =head1 VERSION
 
-This document describes version 0.03 of App::ListPrereqs (from Perl distribution App-ListPrereqs), released on 2014-08-16.
+This document describes version 0.04 of App::ListPrereqs (from Perl distribution App-ListPrereqs), released on 2014-09-04.
 
 =head1 SYNOPSIS
 
@@ -231,7 +230,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/App-ListPr
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-App-ListPrereqs>.
+Source repository is at L<https://github.com/perlancar/perl-App-ListPrereqs>.
 
 =head1 BUGS
 
@@ -243,11 +242,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

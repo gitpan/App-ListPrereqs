@@ -3,8 +3,8 @@
 # Note: This script is a CLI interface to Riap function /App/ListPrereqs/list_prereqs
 # and generated automatically using Dist::Zilla::Plugin::Rinci::ScriptFromFunc version 0.01
 
-our $DATE = '2014-08-16'; # DATE
-our $VERSION = '0.03'; # VERSION
+our $DATE = '2014-09-04'; # DATE
+our $VERSION = '0.04'; # VERSION
 
 use 5.010001;
 use strict;
@@ -14,9 +14,7 @@ BEGIN { no warnings; $main::Log_Level = 'info'; }
 
 use Perinci::CmdLine::Any -prefer_lite=>1;
 
-Perinci::CmdLine::Any->new(
-    url => "/App/ListPrereqs/list_prereqs",
-)->run;
+Perinci::CmdLine::Any->new(url => "/App/ListPrereqs/list_prereqs")->run;
 
 # ABSTRACT: List prerequisites of a Perl module
 # PODNAME: list-prereqs
@@ -33,7 +31,7 @@ list-prereqs - List prerequisites of a Perl module
 
 =head1 VERSION
 
-This document describes version 0.03 of list-prereqs (from Perl distribution App-ListPrereqs), released on 2014-08-16.
+This document describes version 0.04 of list-prereqs (from Perl distribution App-ListPrereqs), released on 2014-09-04.
 
 =head1 SYNOPSIS
 
@@ -64,7 +62,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/App-ListPr
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-App-ListPrereqs>.
+Source repository is at L<https://github.com/perlancar/perl-App-ListPrereqs>.
 
 =head1 BUGS
 
@@ -76,11 +74,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

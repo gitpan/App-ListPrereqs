@@ -2,8 +2,8 @@ NAME
     App::ListPrereqs - List prerequisites of a Perl module
 
 VERSION
-    This document describes version 0.03 of App::ListPrereqs (from Perl
-    distribution App-ListPrereqs), released on 2014-08-16.
+    This document describes version 0.04 of App::ListPrereqs (from Perl
+    distribution App-ListPrereqs), released on 2014-09-04.
 
 SYNOPSIS
      # Use via list-prereqs CLI script
@@ -55,7 +55,7 @@ HOMEPAGE
 
 SOURCE
     Source repository is at
-    <https://github.com/sharyanto/perl-App-ListPrereqs>.
+    <https://github.com/perlancar/perl-App-ListPrereqs>.
 
 BUGS
     Please report any bugs or feature requests on the bugtracker website
@@ -65,10 +65,10 @@ BUGS
     to an existing test-file that illustrates the bug or desired feature.
 
 AUTHOR
-    Steven Haryanto <stevenharyanto@gmail.com>
+    perlancar <perlancar@cpan.org>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2014 by Steven Haryanto.
+    This software is copyright (c) 2014 by perlancar@cpan.org.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.
